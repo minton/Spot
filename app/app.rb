@@ -1,4 +1,5 @@
 require 'models/player'
+require 'models/spotify'
 
 module Spot
   class App < Sinatra::Base
@@ -30,9 +31,9 @@ module Spot
       Player.volume = params[:volume]
       Player.volume.to_s
     end
-    put '/find' do
+    get '/find' do
       query = params[:q]  
-      Player.find(query)    
+      Spotify.find(query)    
     end
   end
 end

@@ -16,10 +16,6 @@ module Spot
       self.playing
     end
 
-    def self.find(query)
-      
-    end
-
     def self.pause
       `./script/pause`
       "Everything is paused."
