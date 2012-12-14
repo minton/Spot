@@ -1,0 +1,9 @@
+#!/bin/sh
+#
+# Tells Spotify to pause.
+
+osascript << APPLESCRIPT
+if application "Spotify" is running then
+  tell application "Spotify" to pause
+end if
+APPLESCRIPT

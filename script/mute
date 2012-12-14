@@ -1,0 +1,9 @@
+#!/bin/sh
+#
+# Sets Spotify's volume to 0.
+
+osascript << APPLESCRIPT
+if application "Spotify" is running then
+  tell application "Spotify" to set sound volume to 0
+end if
+APPLESCRIPT

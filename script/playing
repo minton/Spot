@@ -1,0 +1,19 @@
+#!/bin/sh
+#
+# Asks Spotify what's playing.
+
+osascript << APPLESCRIPT
+if application "Spotify" is running then
+  try
+    tell application "Spotify"
+      set who to artist of current track
+      set what to name of current track
+      set onwhat to album of current track
+      set info to "“" & what & "”" & " by " & who
+    end tell
+    return info
+  on error
+    return "Pretty sure nothings playing."
+  end try
+end if
+APPLESCRIPT

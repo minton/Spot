@@ -1,0 +1,12 @@
+#!/bin/sh
+#
+# Returns Spotify's current state.
+
+osascript << APPLESCRIPT
+if application "Spotify" is running then
+  tell application "Spotify"
+    set info to player state
+  end tell
+  return info
+end if
+APPLESCRIPT

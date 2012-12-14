@@ -1,0 +1,11 @@
+#!/bin/sh
+#
+# Tells Spotify to play a specific song.
+#
+# $1 - The spotify track URI
+
+osascript << APPLESCRIPT
+if application "Spotify" is running then
+  tell application "Spotify" to play track "$1"
+end if
+APPLESCRIPT
