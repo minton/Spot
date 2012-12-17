@@ -33,7 +33,8 @@ module Spot
     end
     get '/find' do
       query = params[:q]  
-      Spotify.find(query)    
+      track_uri = Spotify.find(query)
+      track_uri.nil?? "What the hell is you talkin' 'bout?" : track_uri
     end
   end
 end

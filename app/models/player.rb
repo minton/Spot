@@ -2,7 +2,7 @@ module Spot
   class Player
     
     def self.state
-      `.script/get-state`
+      `./script/get-state`
     end
 
     def self.playing
@@ -12,7 +12,6 @@ module Spot
 
     def self.play
       `./script/play`
-      "Let's do it..."
       self.playing
     end
 
@@ -23,8 +22,7 @@ module Spot
     
     def self.next
       `./script/next`
-      "Onwards!"
-      self.playing
+      "Onwards! #{self.playing}"
     end
 
     def self.back

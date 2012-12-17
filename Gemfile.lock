@@ -16,7 +16,6 @@ GEM
     rack-protection (1.3.2)
       rack
     rake (10.0.3)
-    rb-appscript (0.6.1)
     sinatra (1.3.3)
       rack (~> 1.3, >= 1.3.6)
       rack-protection (~> 1.2)
@@ -35,6 +34,5 @@ DEPENDENCIES
   foreman
   meta-spotify
   rake
-  rb-appscript
   sinatra
   thin

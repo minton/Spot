@@ -2,5 +2,9 @@ $LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__))
 require 'rubygems'
 require 'bundler/setup'
 require 'sinatra'
-require 'appscript'
 require 'app'
+
+configure do
+  `./script/boot`
+  enable :logging
+end

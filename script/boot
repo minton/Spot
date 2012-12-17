@@ -1,0 +1,12 @@
+#!/bin/sh
+#
+# Sets up Spotify to play endlessly.
+
+osascript << APPLESCRIPT
+if not application "Spotify" is running then
+  tell application "Spotify" to activate
+  delay 2
+  tell application "Spotify" to set repeating to true
+  tell application "Spotify" to set shuffling to true
+end if
+APPLESCRIPT
