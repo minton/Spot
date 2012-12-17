@@ -6,5 +6,4 @@ require 'app'
 
 configure do
   `./script/boot`
-  enable :logging
 end
