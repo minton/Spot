@@ -1,12 +1,12 @@
 module Spot
   class Player
-    
+
     def self.state
       `./script/get-state`
     end
 
     def self.playing
-      song = `./script/playing`
+      song = `./script/playing`.gsub /(?<!\n)\n(?!\n)/, ''
       "Now playing #{song}..."
     end
 
@@ -27,7 +27,7 @@ module Spot
 
     def self.back
       `./script/back`
-      "Let's hear it again!"
+      "Let's hear it again! #{self.playing}"
     end
     
     def self.mute
@@ -36,7 +36,7 @@ module Spot
     end
 
     def self.volume
-      `./script/get-volume`
+      `./script/get-volume`.gsub /(?<!\n)\n(?!\n)/, ''
     end
     
     def self.volume=(vol)
@@ -44,8 +44,7 @@ module Spot
       vol
     end
 
-  private
-   def self.play_song(spotifyTrack)
+    def self.play_song(spotifyTrack)
       `./script/play-song #{spotifyTrack}`
       self.playing
     end

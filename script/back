@@ -5,5 +5,6 @@
 osascript << APPLESCRIPT
 if application "Spotify" is running then
   tell application "Spotify" to previous track
+  tell application "Spotify" to previous track
 end if
 APPLESCRIPT

@@ -7,6 +7,7 @@ module Spot
       'Welcome to Spot!'
     end
     put '/play' do
+      Player.volume = 45
       Player.play
     end
     put '/pause' do
@@ -31,10 +32,14 @@ module Spot
       Player.volume = params[:volume]
       Player.volume.to_s
     end
-    get '/find' do
+    post '/find' do
       query = params[:q]  
       track_uri = Spotify.find(query)
-      track_uri.nil?? "What the hell is you talkin' 'bout?" : track_uri
+      if track_uri.nil? 
+        "What the hell is you talkin' 'bout?"
+      else
+        Player.play_song(track_uri)
+      end 
     end
   end
 end
