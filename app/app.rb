@@ -4,7 +4,7 @@ require 'models/spotify'
 module Spot
   class App < Sinatra::Base
     get '/' do
-      'Welcome to Spot bitches!'
+      'Welcome to Spot!'
     end
     put '/play' do
       Player.play
