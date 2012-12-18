@@ -10,6 +10,10 @@ module Spot
       "Now playing #{song}..."
     end
 
+    def self.artwork
+      art = `./script/artwork`.gsub /(?<!\n)\n(?!\n)/, ''
+    end
+
     def self.play
       `./script/play`
       self.playing

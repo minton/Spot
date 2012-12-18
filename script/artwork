@@ -1,0 +1,31 @@
+#!/bin/sh
+#
+# Saves artwork of currently playing song and returns path to file.
+
+osascript << APPLESCRIPT
+if application "Spotify" is running then
+  try
+    tell application "Spotify"
+      set theCover to artwork of the current track
+    end tell
+    set t_path to path to temporary items from user domain as text
+    set f_path to t_path & "album.tiff"
+    set c_path to t_path & "album.png"
+    set f to open for access f_path with write permission
+    set eof of f to 0
+    write theCover to f
+    close access f
+    with timeout of 15 seconds
+      tell application "Image Events"
+        launch
+        set this_image to open file (f_path as string)
+        save this_image as PNG in file c_path with icon
+        close this_image
+      end tell
+    end timeout
+return POSIX path of c_path
+  on error
+    return "Pretty sure nothings playing."
+  end try
+end if
+APPLESCRIPT

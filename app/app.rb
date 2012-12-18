@@ -4,7 +4,7 @@ require 'models/spotify'
 module Spot
   class App < Sinatra::Base
     get '/' do
-      'Welcome to Spot!'
+      'Welcome to Spot!<br/>http://github.com/minton/Spot'
     end
     put '/play' do
       Player.volume = 45
@@ -40,6 +40,11 @@ module Spot
       else
         Player.play_song(track_uri)
       end 
+    end
+    get '/playing.png' do
+      content_type 'image/png'
+      img = Player.artwork
+      send_file img, :disposition => 'inline'
     end
   end
 end
