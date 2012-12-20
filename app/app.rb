@@ -17,7 +17,7 @@ module Spot
       Player.mute
     end
     get '/playing' do
-     "<img src='/playing.png'><br/>#{Player.playing}"
+     Player.playing
     end
     put '/next' do
       Player.next
