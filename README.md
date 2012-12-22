@@ -131,3 +131,7 @@ Play the previous track:
     Content-Length: 71
     Let's hear it again! Now playing “Raise Your Weapon” by Deadmau5...
     
+#Author
+
+Spot was lovingly crafted by [@mcminton](https://twitter.com/mcminton). You should [follow me](https://twitter.com/intent/follow?screen_name=mcminton) for good karma!
+    
