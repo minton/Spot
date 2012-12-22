@@ -38,7 +38,19 @@ You should now open your favorite playlist or radio station.
 
 Spot can technically be used by any client capable of GET/PUT/POST requests as described below but it was really designed to be controlled via [Hubot](http://hubot.github.com/) in [Campfire](http://campfirenow.com/#videos/tour_video). A [pull request](https://github.com/github/hubot-scripts/pull/656) has been submitted to the official [Hubot scripts repo](https://github.com/github/hubot-scripts) but until that gets approved you can find the official Spot Hubot script here: [Spot.coffee](https://raw.github.com/minton/Spot/master/Spot.coffee).
 
-##API
+###Campfire
+
+    hubot playing? - Returns the currently-played song.
+    hubot play <song> - Play a particular song. This plays the first most popular result.
+    hubot play! - Plays current playlist or song.
+    hubot pause - Pause the music.
+    hubot mute - Sets the volume to 0.
+    hubot volume? - Returns the current volume level.
+    hubot volume [0-100] - Sets the volume.
+    hubot play next - Plays the next song.
+    hubot play back - Plays the previous song.
+
+###API
 
 What song is playing:
 
