@@ -2,6 +2,8 @@
 
 Simple Spotify-powered tunes for your office.
 
+![](https://github.com/minton/Spot/raw/master/resources/Diagram.gif)
+
 ##Origins
 
 This project is heavily inspired by [Play](https://github.com/play/play). Which is an awesome iTunes-based solution.
@@ -134,4 +136,13 @@ Play the previous track:
 #Author
 
 Spot was lovingly crafted by [@mcminton](https://twitter.com/mcminton). You should [follow me](https://twitter.com/intent/follow?screen_name=mcminton) for good karma!
+
+#Art
+
+Hubot image from [Cameron McEfee](https://github.com/cameronmcefee) found here: http://octodex.github.com/hubot/
+
+Campfire image from [37signals](http://37signals.com/).
+
+Spotify image from [Spotify](http://spotify.com/).
+
     
