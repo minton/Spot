@@ -16,8 +16,8 @@
 #   hubot play <song> - Play a particular song. This plays the first most popular result.
 #   hubot volume? - Returns the current volume level.
 #   hubot volume [0-100] - Sets the volume.
-#   hubot volume+ - Bumps the volume 10%.
-#   hubot volume- - Bumps the volume down 10%.
+#   hubot volume+ - Bumps the volume.
+#   hubot volume- - Bumps the volume down.
 #   hubot mute - Sets the volume to 0.
 #   hubot [name here] says turn it down - Sets the volume to 15 and blames [name here].
 #
