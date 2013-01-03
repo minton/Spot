@@ -40,10 +40,12 @@ module Spot
     end
 
     def self.volume
-      `./script/get-volume`.gsub /(?<!\n)\n(?!\n)/, ''
+      vol = `./script/get-volume`.gsub /(?<!\n)\n(?!\n)/, ''
+      vol.to_i
     end
     
     def self.volume=(vol)
+      vol+=1
       `./script/set-volume #{vol}`
       vol
     end

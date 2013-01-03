@@ -3,7 +3,3 @@ require 'rubygems'
 require 'bundler/setup'
 require 'sinatra'
 require 'app'
-
-configure do
-  `./script/boot`
-end
