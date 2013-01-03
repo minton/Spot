@@ -65,10 +65,8 @@ module Spot
     def bump_up_volume
       current_volume = Player.volume
       case current_volume
-      when 0
+      when 0..10
         20
-      when 1..10
-        current_volume*1.7
       when 11..30
         current_volume*1.45
       when 31..70
