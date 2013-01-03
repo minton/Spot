@@ -44,7 +44,7 @@ module Spot
       Player.volume.to_s
     end
     put '/bumpdown' do
-      Player.volume = bump_down_volume.to_i
+      Player.volume = Player.volume - bump_down_volume.to_i
       Player.volume.to_s
     end
     post '/find' do
@@ -79,9 +79,9 @@ module Spot
       current_volume = Player.volume
       case current_volume
       when 100..80
-       current_volume*0.3
+        current_volume*0.3
       when 79..40
-       current_volume*0.2
+        current_volume*0.2
       else
         current_volume*0.1
       end
