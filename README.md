@@ -38,7 +38,7 @@ You should now open your favorite playlist or radio station.
 
 ##Usage
 
-Spot can technically be used by any client capable of GET/PUT/POST requests as described below but it was really designed to be controlled via [Hubot](http://hubot.github.com/) in [Campfire](http://campfirenow.com/#videos/tour_video). A [pull request](https://github.com/github/hubot-scripts/pull/656) has been submitted to the official [Hubot scripts repo](https://github.com/github/hubot-scripts) but until that gets approved you can find the official Spot Hubot script here: [Spot.coffee](https://raw.github.com/minton/Spot/master/Spot.coffee).
+Spot can technically be used by any client capable of GET/PUT/POST requests as described below but it was really designed to be controlled via [Hubot](http://hubot.github.com/) in [Campfire](http://campfirenow.com/#videos/tour_video). A [pull request](https://github.com/github/hubot-scripts/pull/656) has been submitted to the official [Hubot scripts repo](https://github.com/github/hubot-scripts) but until that gets approved you can find the official Spot Hubot script here: [Spot.coffee](https://raw.github.com/minton/hubot-scripts/master/src/scripts/spot.coffee).
 
 ###Campfire
 
