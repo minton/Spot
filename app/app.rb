@@ -36,8 +36,7 @@ module Spot
       Player.volume.to_s
     end
     put  '/volume' do
-      Player.volume = params[:volume]
-      Player.volume.to_s
+      Player.volume = params[:volume].to_i and Player.volume.to_s unless params[:volume].nil?
     end
     put '/bumpup' do
       Player.volume = bump_up_volume.to_i
