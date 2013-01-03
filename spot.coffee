@@ -17,6 +17,7 @@
 #   hubot volume? - Returns the current volume level.
 #   hubot volume [0-100] - Sets the volume.
 #   hubot mute - Sets the volume to 0.
+#   hubot [name here] says turn it down - Sets the volume to 15 and blames [name here].
 #
 # Author:
 #   mcminton
