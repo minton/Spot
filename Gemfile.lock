@@ -2,6 +2,7 @@ GEM
   remote: http://rubygems.org/
   specs:
     daemons (1.1.9)
+    diff-lcs (1.1.3)
     eventmachine (1.0.0)
     foreman (0.60.2)
       thor (>= 0.13.6)
@@ -16,8 +17,20 @@ GEM
     rack-protection (1.3.2)
       rack
     rake (10.0.3)
+    rspec (2.12.0)
+      rspec-core (~> 2.12.0)
+      rspec-expectations (~> 2.12.0)
+      rspec-mocks (~> 2.12.0)
+    rspec-core (2.12.2)
+    rspec-expectations (2.12.1)
+      diff-lcs (~> 1.1.3)
+    rspec-mocks (2.12.0)
     shotgun (0.9)
       rack (>= 1.0)
+    simplecov (0.7.1)
+      multi_json (~> 1.0)
+      simplecov-html (~> 0.7.1)
+    simplecov-html (0.7.1)
     sinatra (1.3.3)
       rack (~> 1.3, >= 1.3.6)
       rack-protection (~> 1.2)
@@ -36,6 +49,8 @@ DEPENDENCIES
   foreman
   meta-spotify
   rake
+  rspec
   shotgun
+  simplecov
   sinatra
   thin
