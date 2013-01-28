@@ -2,6 +2,9 @@ require 'meta-spotify'
 
 module Spot
   class Spotify
+    #Search spotify meta db for tracks with name like query.
+    #Excludes non-US tracks.
+    #Orders by popularity.
     def self.find(query)
         search = MetaSpotify::Track.search(query)
         tracks = search.first[1]
