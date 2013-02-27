@@ -14,6 +14,11 @@ module Spot
       'Welcome to Spot!<br/>http://github.com/minton/Spot'
     end
 
+    put '/say' do
+      what = params[:what]
+      Player.say(what)
+    end
+
     put '/play' do
       Player.volume = 45
       Player.play

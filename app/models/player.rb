@@ -55,5 +55,12 @@ module Spot
       self.playing
     end
 
+    def self.say(what)
+      currentVolume = self.volume
+      self.volume=currentVolume/3
+      `say #{what}`
+      self.volume = currentVolume
+    end
+
   end
 end
