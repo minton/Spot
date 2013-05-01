@@ -76,6 +76,16 @@ module Spot
       end 
     end
 
+    post '/just-find' do
+      query = params[:q]
+      track_data = Spotify.findData(query)
+      if track_data.nil?
+        "What the hell is you talkin' 'bout?"
+      else
+        sprintf("Found %s [in album %s]", track_data.name, track_data.album.name)
+      end
+    end
+
     get '/playing.png' do
       content_type 'image/png'
       img = Player.artwork
