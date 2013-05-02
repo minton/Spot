@@ -76,10 +76,28 @@ module Spot
       query = params[:q]
       track_data = Spotify.findData(query)
       if track_data.nil?
-        "What the hell is you talkin' 'bout?"
-      else
-        sprintf("Found %s [in album %s]", track_data.name, track_data.album.name)
+        return "What the hell is you talkin' 'bout?"
       end
+      r_length = track_data.length
+      if (r_length.to_i < 60)
+        length = r_length + ' seconds'
+      else
+        length = sprintf('%d:%2d', (r_length.to_i / 60).floor, r_length.to_i % 60)
+      end
+      if defined? track_data.artist
+        artist_name = track_data.artist.name
+      else
+        if defined? track_data.artists
+          artist_name = com = ''
+          track_data.artists.each {|artist|
+            artist_name += com + artist.name
+            com = ', '
+          }
+        else
+          artist_name = 'Unknown'
+        end
+      end
+      sprintf("I found:\nTrack: %s\nArtist: %s\nAlbum: %s [%s]\nLength: %s", track_data.name, artist_name, track_data.album.name, track_data.album.released, length)
     end
 
     get '/how-much-longer' do
