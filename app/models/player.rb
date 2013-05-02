@@ -44,6 +44,10 @@ module Spot
       vol.to_i
     end
     
+    def self.how_much_longer
+      `./script/how-much-longer`
+    end
+
     def self.volume=(vol)
       vol+=1
       `./script/set-volume #{vol}`
