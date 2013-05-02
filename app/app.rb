@@ -82,6 +82,17 @@ module Spot
       end
     end
 
+    get '/how-much-longer' do
+      secs_str = Player.how_much_longer
+      seconds_i = secs_str.to_i
+      if (seconds_i < 60)
+        return "There are " + secs_str + " seconds left"
+      end
+      minutes_i = (seconds_i / 60).floor
+      seconds_i = seconds_i % 60
+      sprintf("Time remaining: %d:%02d", minutes_i, seconds_i)
+    end
+
     get '/playing.png' do
       content_type 'image/png'
       img = Player.artwork
