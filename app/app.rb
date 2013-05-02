@@ -1,6 +1,7 @@
 require 'models/player'
 require 'models/spotify'
 require 'logger'
+require 'json'
 
 module Spot
   class App < Sinatra::Base
@@ -72,6 +73,20 @@ module Spot
       end 
     end
 
+    post '/play-uri' do
+      Player.play_song(params[:uri])
+    end
+
+    get '/query' do
+      tracks = Spotify.findTracks(params[:q])
+      res = []
+      tracks.each {|track|
+        res.push(serialize_track(track))
+      }
+      response.headers['Content-Type'] = 'application/json'
+      res.to_json
+    end
+
     post '/just-find' do
       query = params[:q]
       track_data = Spotify.findData(query)
@@ -104,7 +119,7 @@ module Spot
       secs_str = Player.how_much_longer
       seconds_i = secs_str.to_i
       if (seconds_i < 60)
-        return "There are " + secs_str + " seconds left"
+        return sprintf "There are %s seconds left", secs_str.strip!
       end
       minutes_i = (seconds_i / 60).floor
       seconds_i = seconds_i % 60
@@ -118,6 +133,41 @@ module Spot
     end
 
     private
+
+      def serialize_track(track)
+        if track.nil?
+          return {}
+        end
+        artists = []
+        if defined? track.artist
+          artists.push({
+            'name' => track.artist.name,
+            'uri' => track.artist.uri
+          })
+        else
+          if defined? track.artists and track.artists.length > 0
+            track.artists.each {|artist| 
+              artists.push({
+              'name' => artist.name,
+              'uri' => artist.uri
+              })
+            }
+          end
+        end
+        {
+          'uri' => track.uri,
+          'name' => track.name,
+          'popularity' => track.popularity,
+          'track_number' => track.track_number,
+          'length' => track.length,
+          'artists' => artists,
+          'album' => {
+            'name' => track.album.name,
+            'released' => track.album.released,
+            'uri' => track.album.uri
+          }
+        }
+      end
 
       def bump_up_volume
         current_volume = Player.volume
