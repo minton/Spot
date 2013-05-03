@@ -22,10 +22,14 @@
 #   hubot mute - Sets the volume to 0.
 #   hubot [name here] says turn it down - Sets the volume to 15 and blames [name here].
 #   hubot say <message> - Tells hubot to read a message aloud.
-#
-# Author:
-#   mcminton
-VERSION = '1.2.1'
+#   hubot how much longer? - Hubot tells you how much is left on the current track
+#   hubot find x music <search> - Searches and pulls up x (or 3) most popular matches
+#   hubot play #n - Play the nth track from the last search results
+#   hubot album #n - Pull up album info for the nth track in the last search results
+#   hubot last find - Pulls up the most recent find query
+# Authors:
+#   mcminton, <Shad Downey> github:andromedado
+VERSION = '1.3.0'
 
 URL = "#{process.env.HUBOT_SPOT_URL}"
 
@@ -64,15 +68,16 @@ explain = (data) ->
     return 'nothin\''
   artists = []
   artists.push(a.name) for a in data.artists
-  album = data.album.name
-  if data.album.released
-    album += ' [' + data.album.released + ']'
-  return [
-    'Track: ' + data.name,
-    'Album: ' + album,
+  A = []
+  if data.album
+    album = data.album.name
+    if data.album.released
+      album += ' [' + data.album.released + ']'
+    A = ['Album: ' + album]
+  return ['Track: ' + data.name].concat(A).concat([
     'Artist: ' + artists.join(', '),
     'Length: ' + calcLength(data.length)
-    ].join("\n")
+    ]).join("\n")
 
 now = () ->
   return ~~(Date.now() / 1000)
@@ -82,6 +87,22 @@ render = (explanations) ->
   for exp, i in explanations
     str += '#' + (i + 1) + "\n" + exp + "\n"
   return str
+
+renderAlbum = (album) ->
+  artists = []
+  if not album.artists
+    artists.push('No one...?')
+  else
+    artists.push(a.name) for a in album.artists
+  pt1 = [
+    '#ALBUM#',
+    'Name: ' + album.name,
+    'Artist: ' + artists.join(', '),
+    'Released: ' + album.released,
+    'Tracks:'
+    ].join("\n") + "\n"
+  explanations = (explain track for track in album.tracks)
+  return pt1 + render(explanations)
 
 showResults = (robot, message, results) ->
   if not results or not results.length
@@ -175,6 +196,21 @@ module.exports = (robot) ->
     spotRequest message, '/find', 'post', params, (err, res, body) ->
       message.send(":small_blue_diamond: #{body}")
 
+  robot.respond /album .(\d+)/i, (message) ->
+    r = getLastResultsRelevantToUser(robot, message.message.user)
+    n = parseInt(message.match[1], 10) - 1
+    if (!r || !r[n])
+      message.send(":small_blue_diamon: out of bounds...")
+      return
+    spotRequest message, '/album-info', 'get', {'uri' : r[n].album.uri}, (err, res, body) ->
+      album = JSON.parse(body)
+      album.tracks.forEach((track) ->
+        track.album = track.album || {}
+        track.album.uri = r[n].album.uri
+      )
+      recordUserQueryResults(message, album.tracks)
+      message.send(renderAlbum album)
+
   robot.respond /(how much longer|(time )?remaining)\?$/i, (message) ->
     spotRequest message, '/how-much-longer', 'get', {}, (err, res, body) ->
       message.send(":small_blue_diamond: #{body}")
@@ -207,6 +243,7 @@ module.exports = (robot) ->
     if (!data || data.length == 0)
       message.send(":small_blue_diamond: I got nothin'")
       return
+    recordUserQueryResults(message, data)
     showResults(robot, message, data)
 
   robot.respond /say (.*)/i, (message) ->

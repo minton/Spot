@@ -139,7 +139,45 @@ module Spot
       send_file img, :disposition => 'inline'
     end
 
+    get '/album-info' do
+      response.headers['Content-Type'] = 'application/json'
+      serialize_album(Spotify.getAlbumInfo(params[:uri])).to_json
+    end
+
     private
+
+      def serialize_album(album)
+        if album.nil?
+          return {}
+        end
+        artists = []
+        if defined? album.artist
+          album.push({
+            'name' => album.artist.name,
+            'uri' => album.artist.uri
+          })
+        else
+          if defined? album.artists and album.artists.length > 0
+            album.artists.each {|artist| 
+              artists.push({
+              'name' => artist.name,
+              'uri' => artist.uri
+              })
+            }
+          end
+        end
+        tracks = []
+        album.tracks.each {
+          |track|
+          tracks.push(serialize_track(track))
+        }
+        {
+          'name' => album.name,
+          'artists' => artists,
+          'released' => album.released,
+          'tracks' => tracks
+        }
+      end
 
       def serialize_track(track)
         if track.nil?
@@ -161,19 +199,22 @@ module Spot
             }
           end
         end
-        {
+        obj = {
           'uri' => track.uri,
           'name' => track.name,
           'popularity' => track.popularity,
           'track_number' => track.track_number,
           'length' => track.length,
-          'artists' => artists,
-          'album' => {
+          'artists' => artists
+        }
+        if (not track.album.nil?)
+          obj['album'] = {
             'name' => track.album.name,
             'released' => track.album.released,
             'uri' => track.album.uri
           }
-        }
+        end
+        obj
       end
 
       def bump_up_volume
