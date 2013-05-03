@@ -149,7 +149,7 @@ module.exports = (robot) ->
       catch error
         message.send(":small_blue_diamond: :flushed: " + error.message)
 
-  robot.respond /last find\s*$/i, (message) ->
+  robot.respond /last find\??/i, (message) ->
     data = robot.brain.get 'lastQueryResults'
     if (!data || data.length == 0)
       message.send(":small_blue_diamond: I got nothin'")
