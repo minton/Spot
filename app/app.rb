@@ -87,6 +87,13 @@ module Spot
       res.to_json
     end
 
+    get '/single-query' do
+      query = params[:q]
+      track_data = Spotify.findData(query)
+      response.headers['Content-Type'] = 'application/json'
+      serialize_track(track_data).to_json
+    end
+
     post '/just-find' do
       query = params[:q]
       track_data = Spotify.findData(query)

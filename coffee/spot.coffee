@@ -34,11 +34,16 @@ spotRequest = (message, path, action, options, callback) ->
       callback(err,res,body)
 
 explain = (data) ->
+  if not data.artists
+    return 'nothin\''
   artists = []
   artists.push(a.name) for a in data.artists
+  album = data.album.name
+  if data.album.released
+    album += ' [' + data.album.released + ']'
   return [
     'Track: ' + data.name,
-    'Album: ' + data.album.name,
+    'Album: ' + album,
     'Artist: ' + artists.join(', '),
     'Length: ' + calcLength(data.length)
     ].join("\n")
@@ -65,6 +70,15 @@ calcLength = (seconds) ->
   if (rSeconds < 10)
     rSeconds = '0' + rSeconds
   return Math.floor(iSeconds / 60) + ':' + rSeconds
+
+playTrack = (track, message) ->
+  if not track or not track.uri
+    message.send(":flushed:")
+    return
+  message.send(":small_blue_diamond: Switching to: " + track.name)
+  spotRequest message, '/play-uri', 'post', {'uri' : track.uri}, (err, res, body) ->
+    if (err)
+      message.send(":flushed: " + err)
 
 module.exports = (robot) ->
 
@@ -118,10 +132,16 @@ module.exports = (robot) ->
       r = robot.brain.get 'lastQueryResults'
       i = parseInt(playNum[1], 10) - 1
       if (r[i])
-        message.send(":small_blue_diamond: " + r[i].name + " it is!")
-        spotRequest message, '/play-uri', 'post', {'uri' : r[i].uri}, (err, res, body) ->
-          if (err)
-            message.send(":flushed: " + err)
+        playTrack(r[i], message)
+        return
+    if (message.match[1].match(/^that$/i))
+      lastSingle = robot.brain.get('lastSingleQuery')
+      if (lastSingle)
+        playTrack(lastSingle, message)
+        return
+      lR = robot.brain.get('lastQueryResults')
+      if (lR && lR.length)
+        playTrack(lR[0], message)
         return
     params = {q: message.match[1]}
     spotRequest message, '/find', 'post', params, (err, res, body) ->
@@ -133,8 +153,10 @@ module.exports = (robot) ->
 
   robot.respond /query (.*)/i, (message) ->
     params = {q: message.match[1]}
-    spotRequest message, '/just-find', 'post', params, (err, res, body) ->
-      message.send(":small_blue_diamond: #{body}")
+    spotRequest message, '/single-query', 'get', params, (err, res, body) ->
+      track = JSON.parse(body)
+      robot.brain.set('lastSingleQuery', track)
+      message.send("I found:\n" + explain track)
 
   robot.respond /find ?(\d+)? music (.*)/i, (message) ->
     limit = message.match[1] || 3
