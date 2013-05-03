@@ -19,7 +19,7 @@ module Spot
       Player.say(what)
     end
 
-    put '/shipit' do
+    get '/shipit' do
       Player.shipit
     end
 
