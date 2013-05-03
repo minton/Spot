@@ -78,14 +78,17 @@ now = () ->
   return ~~(Date.now() / 1000)
 
 render = (explanations) ->
-  str = "I found:\n"
+  str = ""
   for exp, i in explanations
     str += '#' + (i + 1) + "\n" + exp + "\n"
   return str
 
 showResults = (robot, message, results) ->
+  if not results or not results.length
+    return message.send(':small_blue_diamond: I found nothin\'')
   explanations = (explain track for track in results)
-  return message.send(render(explanations))
+  message.send(':small_blue_diamond: I found:')
+  message.send(render(explanations))
 
 calcLength = (seconds) ->
   iSeconds = parseInt(seconds, 10)
@@ -181,7 +184,8 @@ module.exports = (robot) ->
     spotRequest message, '/single-query', 'get', params, (err, res, body) ->
       track = JSON.parse(body)
       robot.brain.set('lastSingleQuery', track)
-      message.send("I found:\n" + explain track)
+      message.send(":small_blue_diamond: I found:")
+      message.send(explain track)
 
   robot.respond /find ?(\d+)? music (.*)/i, (message) ->
     limit = message.match[1] || 3
