@@ -25,6 +25,7 @@
 #
 # Author:
 #   mcminton
+VERSION = '1.2.1'
 
 URL = "#{process.env.HUBOT_SPOT_URL}"
 
@@ -219,4 +220,8 @@ module.exports = (robot) ->
     params = {volume: 15}
     spotRequest message, '/volume', 'put', params, (err, res, body) ->
       message.send("Spot volume set to #{body}. :mega:")
+
+  robot.respond /spot version\??/i, (message) ->
+    message.send(':small_blue_diamond: Well, ' + message.message.user.name + ', my Spot version is presently ' + VERSION)
+
 
