@@ -33,6 +33,31 @@ spotRequest = (message, path, action, options, callback) ->
     .query(options)[action]() (err, res, body) ->
       callback(err,res,body)
 
+recordUserQueryResults = (message, results) ->
+  uQ = message.robot.brain.get('userQueries') || {}
+  uD = uQ[message.message.user.id] = uQ[message.message.user.id] || {}
+  uD.queries = uD.queries || []
+  uD.queries.push(
+    text: message.message.text
+    time: now()
+    results: results
+  )
+  message.robot.brain.set('userQueries', uQ)
+
+getLastResultsRelevantToUser = (robot, user) ->
+  uQ = robot.brain.get('userQueries') || {}
+  uD = uQ[user.id] = uQ[user.id] || {}
+  uD.queries = uD.queries || []
+  lastUQTime = 0
+  if (uD.queries.length)
+    lastUQTime = uD.queries[uD.queries.length - 1].time
+  lqT = robot.brain.get('lastQueryTime')
+  if (lqT && lqT > lastUQTime && lqT - lastUQTime > 60)
+    return robot.brain.get('lastQueryResults')
+  if (uD.queries.length)
+    return uD.queries[uD.queries.length - 1].results
+  return null
+
 explain = (data) ->
   if not data.artists
     return 'nothin\''
@@ -48,18 +73,17 @@ explain = (data) ->
     'Length: ' + calcLength(data.length)
     ].join("\n")
 
+now = () ->
+  return ~~(Date.now() / 1000)
+
 render = (explanations) ->
   str = "I found:\n"
   for exp, i in explanations
     str += '#' + (i + 1) + "\n" + exp + "\n"
   return str
 
-setResults = (robot, results) ->
-  robot.brain.set('lastQueryResults', results)
-
-showResults = (robot, message) ->
-  data = robot.brain.get 'lastQueryResults'
-  explanations = (explain track for track in data)
+showResults = (robot, message, results) ->
+  explanations = (explain track for track in results)
   return message.send(render(explanations))
 
 calcLength = (seconds) ->
@@ -129,9 +153,9 @@ module.exports = (robot) ->
   robot.respond /play (.*)/i, (message) ->
     playNum = message.match[1].match(/#(\d+)\s*$/)
     if (playNum)
-      r = robot.brain.get 'lastQueryResults'
+      r = getLastResultsRelevantToUser(robot, message.message.user)
       i = parseInt(playNum[1], 10) - 1
-      if (r[i])
+      if (r && r[i])
         playTrack(r[i], message)
         return
     if (message.match[1].match(/^that$/i))
@@ -166,8 +190,10 @@ module.exports = (robot) ->
         data = JSON.parse(body)
         if (data.length > limit)
           data = data.slice(0, limit)
-        setResults(robot, data)
-        showResults(robot, message)
+        robot.brain.set('lastQueryResults', data)
+        robot.brain.set('lastQueryTime', now())
+        recordUserQueryResults(message, data)
+        showResults(robot, message, data)
       catch error
         message.send(":small_blue_diamond: :flushed: " + error.message)
 
@@ -176,13 +202,16 @@ module.exports = (robot) ->
     if (!data || data.length == 0)
       message.send(":small_blue_diamond: I got nothin'")
       return
-    showResults(robot, message)
+    showResults(robot, message, data)
 
   robot.respond /say (.*)/i, (message) ->
     what = message.match[1]
     params = {what: what}
     spotRequest message, '/say', 'put', params, (err, res, body) ->
       message.send(what)
+
+  robot.respond /say me/i, (message) ->
+    message.send('no way ' + message.message.user.name);
 
   robot.respond /(.*) says.*turn.*down.*/i, (message) ->
     name = message.match[1]
