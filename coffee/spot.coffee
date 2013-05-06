@@ -211,7 +211,7 @@ module.exports = (robot) ->
       recordUserQueryResults(message, album.tracks)
       message.send(renderAlbum album)
 
-  robot.respond /(how much longer|(time )?remaining)\?$/i, (message) ->
+  robot.respond /(how much )?(time )?(remaining|left)\??$/i, (message) ->
     spotRequest message, '/how-much-longer', 'get', {}, (err, res, body) ->
       message.send(":small_blue_diamond: #{body}")
 
