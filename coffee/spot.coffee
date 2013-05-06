@@ -29,7 +29,7 @@
 #   hubot last find - Pulls up the most recent find query
 # Authors:
 #   mcminton, <Shad Downey> github:andromedado
-VERSION = '1.3.0'
+VERSION = '1.3.1'
 
 URL = "#{process.env.HUBOT_SPOT_URL}"
 
