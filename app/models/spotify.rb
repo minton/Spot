@@ -23,5 +23,9 @@ module Spot
         tracks
     end
 
+    def self.getAlbumInfo(uri)
+      MetaSpotify::Album.lookup(uri, {:extras => 'trackdetail'})
+    end
+
   end
 end
