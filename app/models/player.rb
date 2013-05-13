@@ -64,6 +64,7 @@ module Spot
       self.volume=currentVolume/3
       `say #{what}`
       self.volume = currentVolume
+      what
     end
 
   end
