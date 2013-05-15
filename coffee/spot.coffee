@@ -154,6 +154,10 @@ module.exports = (robot) ->
       message.send("#{URL}/playing.png")
       message.send(":notes:  #{body}")
 
+  robot.respond /album art\??/i, (message) ->
+    spotRequest message, '/playing', 'get', {}, (err, res, body) ->
+      message.send("#{URL}/playing.png")
+
   robot.respond /volume\?/i, (message) ->
     spotRequest message, '/volume', 'get', {}, (err, res, body) ->
       message.send("Spot volume is #{body}. :mega:")
