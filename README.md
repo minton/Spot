@@ -55,6 +55,13 @@ Spot can technically be used by any client capable of GET/PUT/POST requests as d
     hubot mute - Sets the volume to 0.
     hubot [name here] says turn it down - Sets the volume to 15 and blames [name here].
 
+###Clients
+
+[Window Spot](https://github.com/minton/windowspot) for Windows
+
+![Ugly ScreenShot](https://raw.github.com/minton/windowspot/master/UglyScreenShot.PNG)
+
+
 ###API
 
 What song is playing:
