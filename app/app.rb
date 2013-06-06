@@ -126,6 +126,10 @@ module Spot
       sprintf("I found:\nTrack: %s\nArtist: %s\nAlbum: %s [%s]\nLength: %s", track_data.name, artist_name, track_data.album.name, track_data.album.released, length)
     end
 
+    get '/seconds-left' do
+      Player.how_much_longer
+    end
+
     get '/how-much-longer' do
       secs_str = Player.how_much_longer
       seconds_i = secs_str.to_i

@@ -1,4 +1,4 @@
-source :rubygems
+source 'https://rubygems.org/'
 
 gem 'sinatra'
 gem 'rake'
@@ -17,3 +17,5 @@ group :test do
   gem 'guard-rspec'
   gem 'rack-test'
 end
+
+
