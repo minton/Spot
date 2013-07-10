@@ -130,6 +130,10 @@ module Spot
       Player.how_much_longer
     end
 
+    get '/currently-playing' do
+      Player.playingUri
+    end
+
     get '/how-much-longer' do
       secs_str = Player.how_much_longer
       seconds_i = secs_str.to_i

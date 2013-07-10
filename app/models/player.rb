@@ -10,6 +10,11 @@ module Spot
       "Now playing #{song}..."
     end
 
+    def self.playingUri
+      uri = `./script/playing-uri`
+      uri
+    end
+
     def self.artwork
       art = `./script/artwork`.gsub /(?<!\n)\n(?!\n)/, ''
     end
