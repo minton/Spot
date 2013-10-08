@@ -36,6 +36,12 @@ Spotify will open and `Repeat` and `Shuffle` will be turned on.
 
 You should now open your favorite playlist or radio station.
 
+##Airplay Support
+
+You'll need to `Enable access for assistive devices` in System Preferences for this to work.
+
+![Accessibility](http://i.imgur.com/N8rwAee.png)
+
 ##Usage
 
 Spot can technically be used by any client capable of GET/PUT/POST requests as described below but it was really designed to be controlled via [Hubot](http://hubot.github.com/) in [Campfire](http://campfirenow.com/). You can find the latest Spot Hubot script here: [Spot.coffee](https://raw.github.com/github/hubot-scripts/master/src/scripts/spot.coffee).
