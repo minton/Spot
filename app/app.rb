@@ -117,6 +117,12 @@ module Spot
       send_file img, :disposition => 'inline'
     end
 
+    put '/airplay' do
+      deviceName = params[:atv].to_s.strip
+      `./script/airplay "#{deviceName}"`
+      "Airplay set to #{deviceName}."
+    end
+
     private
 
       def bump_up_volume
