@@ -120,6 +120,7 @@ module Spot
     put '/airplay' do
       deviceName = params[:atv].to_s.strip
       `./script/airplay "#{deviceName}"`
+      "Airplay set to #{deviceName}."
     end
 
     private
