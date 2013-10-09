@@ -123,6 +123,11 @@ module Spot
       "Airplay set to #{deviceName}."
     end
 
+    put '/spot' do
+      `./script/boot`
+      "Starting spot..."
+    end
+
     private
 
       def bump_up_volume
