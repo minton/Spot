@@ -60,6 +60,11 @@ Spot can technically be used by any client capable of GET/PUT/POST requests as d
     hubot volume- - Bumps the volume down.
     hubot mute - Sets the volume to 0.
     hubot [name here] says turn it down - Sets the volume to 15 and blames [name here].
+    hubot say <message> - Tells hubot to read a message aloud.
+    hubot find <song> - See if Spotify knows about a song without attempting to play it.
+    hubot airplay <Apple TV> - Tell Spot to broadcast to the specified Apple TV.
+    hubot spot - Restart Spot
+    hubot respot - Restart Spotify
 
 ###Clients
 
