@@ -128,6 +128,11 @@ module Spot
       "Starting spot..."
     end
 
+    put '/respot' do
+      `./script/reboot`
+      "Restarting spotify..."
+    end
+
     private
 
       def bump_up_volume

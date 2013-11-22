@@ -1,0 +1,16 @@
+#!/bin/sh
+#
+# Restarts Spotify due to recent builds only playing a single song at a time
+
+osascript << APPLESCRIPT
+tell application "Spotify"
+	quit
+end tell
+delay 2
+if not application "Spotify" is running then
+	tell application "Spotify" to activate
+	delay 2
+	tell application "Spotify" to set repeating to true
+	tell application "Spotify" to set shuffling to true
+end if
+APPLESCRIPT
