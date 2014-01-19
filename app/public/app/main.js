@@ -1,9 +1,17 @@
 function init() {
+
+	initAux();
+	
+}
+
+function initAux() {
+
 	playing();
 
 	setTimeout(function() {
-	      init()
+	      initAux()
 	}, 10 * 1000);
+
 }
 
 function playing() {
@@ -28,6 +36,47 @@ function playing() {
 function loadArt() {
 	var timestamp = new Date().getTime();
 	$('#albumArt').attr("src", "playing.png?random=" + timestamp);
+}
+
+function find_any_play() {
+
+	$.ajax({
+		type: "POST",
+		url: "/find",
+		data: {
+			"q": $('#searchString').val()
+		}
+	})
+	.done(function( msg ) {
+		playing();
+	});
+
+	return false;
+
+}
+
+function just_find() {
+
+	$('#search').attr("value", "Loading...");
+
+	$.ajax({
+		type: "POST",
+		url: "/just-find",
+		data: {
+			"q": $('#searchString').val()
+		}
+	})
+	.done(function( msg ) {
+
+		$('#search').attr("value", "Search");
+
+		$('#notice').html(loadNotice(msg));
+
+
+	});
+
+	return false;
+
 }
 
 function play() {
@@ -77,4 +126,11 @@ function api(method, uri) {
 		playing();
 	});
 
+}
+
+function loadNotice(text) {
+	return '<div class="alert alert-success alert-dismissable">' + 
+			  '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' + 
+			  '<p>' + text +'</p>' + 
+			'</div>';
 }
