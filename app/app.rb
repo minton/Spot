@@ -11,7 +11,7 @@ module Spot
     end
 
     get '/' do
-      'Welcome to Spot!<br/>http://github.com/minton/Spot'
+      erb :index
     end
 
     put '/say' do
