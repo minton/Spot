@@ -1,3 +1,11 @@
+function init() {
+	playing();
+
+	setTimeout(function() {
+	      init()
+	}, 10 * 1000);
+}
+
 function playing() {
 
 	$.ajax({
