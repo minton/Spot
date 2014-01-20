@@ -21,10 +21,6 @@ module Spot
       Player.say(what)
     end
 
-    get '/shipit' do
-      Player.shipit
-    end
-
     put '/play' do
       Player.volume = 45
       Player.play

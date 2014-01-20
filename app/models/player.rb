@@ -72,9 +72,5 @@ module Spot
       what
     end
 
-    def self.shipit
-      `open /Users/admin/bigboard/prodrelease.app`
-    end
-
   end
 end
