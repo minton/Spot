@@ -1,6 +1,11 @@
+var time = 1;
+var timeLeft = 50;
+var lastSong = "";
+
 function init() {
 
 	initAux();
+	progressAux();
 	
 }
 
@@ -14,6 +19,30 @@ function initAux() {
 
 }
 
+function progressAux() {
+
+	$('#progress').css('width', (time++ / timeLeft) * 100 + '%');
+
+	setTimeout(function() {
+	      progressAux();
+	}, 1 * 1000);
+
+}
+
+function getTimeLeft() {
+
+	$.ajax({
+		type: "GET",
+		url: "/seconds-left"
+	})
+	.done(function( msg ) {
+
+		time = 1;
+		timeLeft = msg
+	});
+
+}
+
 function playing() {
 
 	$.ajax({
@@ -23,9 +52,17 @@ function playing() {
 	.done(function( msg ) {
 
 		var song = msg.match(/Now playing (.*) by/g);
+		song = song[0].substring(12,song[0].length - 2);
+
+		if (song != lastSong) {
+			lastSong = song;
+			getTimeLeft();
+		}
+
+
 		var artist = msg.match(/by (.*)/g);
 
-		$('#songTitle').html(song[0].substring(12,song[0].length - 2));
+		$('#songTitle').html(song);
 		$('#songArtist').html(artist[0]);
 
 		loadArt();
@@ -55,13 +92,13 @@ function find_any_play() {
 
 }
 
-function just_find() {
+function query() {
 
 	$('#search').attr("value", "Loading...");
 
 	$.ajax({
-		type: "POST",
-		url: "/just-find",
+		type: "GET",
+		url: "/query",
 		data: {
 			"q": $('#searchString').val()
 		}
@@ -70,7 +107,7 @@ function just_find() {
 
 		$('#search').attr("value", "Search");
 
-		$('#notice').html(loadNotice(msg));
+		$('#queryList').html(loadQueryResult(msg));
 
 
 	});
@@ -85,6 +122,24 @@ function play() {
 	$('#tp').attr('href', 'JavaScript: pause()');
 
 	api("PUT", "/play");
+
+}
+
+function play_uri(uri) {
+
+	$('#toggle').attr('class', 'glyphicon glyphicon-pause');
+	$('#tp').attr('href', 'JavaScript: pause()');
+
+	$.ajax({
+		type: "POST",
+		url: "/play-uri",
+		data: {
+			"uri": uri
+		}
+	})
+	.done(function( msg ) {
+		playing();
+	});
 
 } 
 
@@ -125,6 +180,27 @@ function api(method, uri) {
 	.done(function( msg ) {
 		playing();
 	});
+
+}
+
+function loadQueryResult(msg) {
+
+	var result = "";
+
+	for (var i = 0; i < msg.length; i++) {
+		result += loadQueryAux(msg[i]);
+	}
+
+	return result;
+
+}
+
+function loadQueryAux(item) {
+
+	return '<a href="JavaScript: play_uri(\''+ item.uri +'\');" class="list-group-item">' + 
+    	   '<h4 class="list-group-item-heading">'+ item.name +'</h4>' +
+    	   '<p class="list-group-item-text">by '+ item.artists[0].name +'</p>' +
+  		   '</a>';
 
 }
 

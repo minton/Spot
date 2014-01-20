@@ -1,0 +1,16 @@
+#!/bin/sh
+#
+# Asks Spotify what's playing.
+
+osascript << APPLESCRIPT
+if application "Spotify" is running then
+  try
+    tell application "Spotify"
+      set uri to spotify url of current track
+    end tell
+    return uri
+  on error
+    return ""
+  end try
+end if
+APPLESCRIPT
