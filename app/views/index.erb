@@ -123,6 +123,14 @@
 	  		<a href="http://github.com/minton/Spot" target="_blank">
 	  			<img src="/app/img/Octocat.png" width="50px" /> GitHub.com/minton/Spot
 	  		</a>
+
+			<% if defined?(@feed_url) then %>
+
+	  		<p class="navbar-text navbar-right">
+	  			<a href="<%= @feed_url %>" target="_blank" class="btn btn-success">Get the Feed</a>
+	  		</p>
+
+	  		<% end %>
 	  	</nav>
 	  </body>
 

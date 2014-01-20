@@ -11,6 +11,7 @@ module Spot
     end
 
     get '/' do
+      @feed_url = ENV['SPOT_FEED_URL']
       erb :index
     end
 
