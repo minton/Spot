@@ -48,7 +48,7 @@
 	  						<input type="text" id="searchString" placeholder="Search" class="form-control">
 	  					</div>
 	  					<input type="submit" onclick="JavaScript: find_any_play();" class="btn btn-success" value="Play" />
-	  					<input id="search" type="submit" onclick="JavaScript: just_find();" class="btn btn-success" value="Search" />
+	  					<input id="search" type="submit" onclick="JavaScript: query();" class="btn btn-success" value="Search" />
 	  				</form>
 	  			</div><!--/.navbar-collapse-->
 	  		</div>
@@ -59,11 +59,7 @@
 
 	  	<div class="container">
 	  		<div class="row">
-	  			<div class="col-xs-8 col-md-4 col-md-offset-4">
-
-	  				<div id="notice">
-
-	  				</div>
+	  			<div class="col-xs-8 col-md-4">
 
 	  				<div class="navbar navbar-inverse" role="navigation" style="margin-bottom: 0px; border-bottom-left-radius:0; border-bottom-right-radius:0;">
 	  					<div class="container">
@@ -78,9 +74,23 @@
 
 	  				<img id="albumArt" src="/playing.png" width="100%" />
 
+					<div style="background-color:black;padding-top">
+						<div class="progress" style="margin:0px;">
+							<div id="progress" class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 1%;">
+								<span class="sr-only">60% Complete</span>
+							</div>
+						</div>
+			        </div>
+
 
 	  				<div class="navbar navbar-inverse" role="navigation" style="border-top-left-radius:0; border-top-right-radius:0;">
 	  					<div class="container">
+	  						<div class="row">
+	  							<div class="col-xs-7 col-md-">
+	  								
+	  							</div>
+								
+	  						</div>
 	  						<div class="row">
 	  							<div class="col-xs-7 col-md-2">
 		  							<a id="next" href="JavaScript: back()">
@@ -114,6 +124,17 @@
 	  						</div>
 	  					</div>
 	  				</div><!-- end nav bar-->
+	  			</div>
+	  			<div class="col-xs-4 col-md-8">
+
+	  				<div id="notice">
+
+	  				</div>
+
+	  				<div id="queryList" class="list-group">
+
+	  				</div>
+
 	  			</div>
 	  		</div>
 	  	</div>
