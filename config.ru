@@ -1,3 +1,8 @@
 require File.expand_path(File.dirname(__FILE__) + '/app/boot')
 
-map('/')         { run Spot::App }
+set :static, true
+set :public_folder, 'public'
+
+map('/') {
+	run Spot::App
+}

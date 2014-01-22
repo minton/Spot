@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<title>Spot</title>
+
+	<script type="text/javascript" src="/app/jquery-1.10.2.min.js"></script>
+
+	<!-- Bootstrap core CSS -->
+	<link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+	<script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+
+	<!-- Just for debugging purposes. Don't actually copy this line! -->
+	<!--[if lt IE 9]><script src="../../docs-assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	    <!--[if lt IE 9]>
+	      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+	      <![endif]-->
+
+	      
+
+	      <script type="text/javascript" src="/app/main.js"></script>
+	  </head>
+
+	  <body onLoad="init()">
+
+	  	<div class="navbar navbar-default" role="navigation">
+	  		<div class="container">
+	  			<div class="navbar-staic-top">
+	  				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	  					<span class="sr-only">Toggle navigation</span>
+	  					<span class="icon-bar"></span>
+	  					<span class="icon-bar"></span>
+	  					<span class="icon-bar"></span>
+	  				</button>
+	  				<a class="navbar-brand" href="#">Spot</a>
+	  			</div>
+	  			<div class="navbar-collapse collapse">
+	  				<form class="navbar-form navbar-right" role="form" onsubmit="JavaScript: return false;">
+	  					<div class="form-group">
+	  						<input type="text" id="searchString" placeholder="Search" class="form-control">
+	  					</div>
+	  					<input type="submit" onclick="JavaScript: find_any_play();" class="btn btn-success" value="Play" />
+	  					<input id="search" type="submit" onclick="JavaScript: query();" class="btn btn-success" value="Search" />
+	  				</form>
+	  			</div><!--/.navbar-collapse-->
+	  		</div>
+	  	</div>
+
+
+
+
+	  	<div class="container">
+	  		<div class="row">
+	  			<div class="col-xs-8 col-md-4">
+
+	  				<div class="navbar navbar-inverse" role="navigation" style="margin-bottom: 0px; border-bottom-left-radius:0; border-bottom-right-radius:0;">
+	  					<div class="container">
+	  						<div class="row">
+	  							<a href="#" id="songTitle">Song Title</a>
+	  						</div>
+	  						<div class="row">
+	  							<a href="#" id="songArtist">Artist</a>
+	  						</div>
+	  					</div>
+	  				</div>
+
+	  				<img id="albumArt" src="/playing.png" width="100%" />
+
+					<div style="background-color:black;padding-top">
+						<div class="progress" style="margin:0px;">
+							<div id="progress" class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 1%;">
+								<span class="sr-only">60% Complete</span>
+							</div>
+						</div>
+			        </div>
+
+
+	  				<div class="navbar navbar-inverse" role="navigation" style="border-top-left-radius:0; border-top-right-radius:0;">
+	  					<div class="container">
+	  						<div class="row">
+	  							<div class="col-xs-7 col-md-">
+	  								
+	  							</div>
+								
+	  						</div>
+	  						<div class="row">
+	  							<div class="col-xs-7 col-md-2">
+		  							<a id="next" href="JavaScript: back()">
+		  								<span class="glyphicon glyphicon-step-backward" style="font-size:25pt;">
+		  								</span>
+		  							</a>
+		  							<a  id="tp"  href="JavaScript: play()">
+		  								<span id="toggle" class="glyphicon glyphicon-play" style="font-size:25pt;">
+		  								</span>
+		  							</a>
+		  							<a id="next" href="JavaScript: next()">
+		  								<span class="glyphicon glyphicon-step-forward" style="font-size:25pt;">
+		  								</span>
+		  							</a>
+		  						</div>
+
+		  						<div class="col-xs-5 col-md-2">
+		  							<a id="mute" href="JavaScript: mute()">
+		  								<span class="glyphicon glyphicon-volume-off" style="font-size:20pt;">
+		  								</span>
+		  							</a>
+		  							<a id="bumpdown" href="JavaScript: bumpdown()">
+		  								<span class="glyphicon glyphicon-volume-down" style="font-size:20pt;">
+		  								</span>
+		  							</a>
+		  							<a id="bumpup" href="JavaScript: bumpup()">
+		  								<span class="glyphicon glyphicon-volume-up" style="font-size:20pt;">
+		  								</span>
+		  							</a>
+		  						</div>
+	  						</div>
+	  					</div>
+	  				</div><!-- end nav bar-->
+	  			</div>
+	  			<div class="col-xs-4 col-md-8">
+
+	  				<div id="notice">
+
+	  				</div>
+
+	  				<div id="queryList" class="list-group">
+
+	  				</div>
+
+	  			</div>
+	  		</div>
+	  	</div>
+
+
+	  	<nav class="navbar navbar-default navbar-bottom" role="navigation">
+	  		<a href="http://github.com/minton/Spot" target="_blank">
+	  			<img src="/app/img/Octocat.png" width="50px" /> GitHub.com/minton/Spot
+	  		</a>
+
+			<% if defined?(@feed_url) then %>
+
+	  		<p class="navbar-text navbar-right">
+	  			<a href="<%= @feed_url %>" target="_blank" class="btn btn-success">Get the Feed</a>
+	  		</p>
+
+	  		<% end %>
+	  	</nav>
+	  </body>
+
+	  </html>

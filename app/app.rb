@@ -1,6 +1,7 @@
 require 'models/player'
 require 'models/spotify'
 require 'logger'
+require 'json'
 
 module Spot
   class App < Sinatra::Base
@@ -11,7 +12,8 @@ module Spot
     end
 
     get '/' do
-      'Welcome to Spot!<br/>http://github.com/minton/Spot'
+      @feed_url = ENV['SPOT_FEED_URL']
+      erb :index
     end
 
     put '/say' do
@@ -72,6 +74,27 @@ module Spot
       end 
     end
 
+    post '/play-uri' do
+      Player.play_song(params[:uri])
+    end
+
+    get '/query' do
+      tracks = Spotify.findTracks(params[:q])
+      res = []
+      tracks.each {|track|
+        res.push(serialize_track(track))
+      }
+      response.headers['Content-Type'] = 'application/json'
+      res.to_json
+    end
+
+    get '/single-query' do
+      query = params[:q]
+      track_data = Spotify.findData(query)
+      response.headers['Content-Type'] = 'application/json'
+      serialize_track(track_data).to_json
+    end
+
     post '/just-find' do
       query = params[:q]
       track_data = Spotify.findData(query)
@@ -100,11 +123,19 @@ module Spot
       sprintf("I found:\nTrack: %s\nArtist: %s\nAlbum: %s [%s]\nLength: %s", track_data.name, artist_name, track_data.album.name, track_data.album.released, length)
     end
 
+    get '/seconds-left' do
+      Player.how_much_longer
+    end
+
+    get '/currently-playing' do
+      Player.playingUri
+    end
+
     get '/how-much-longer' do
       secs_str = Player.how_much_longer
       seconds_i = secs_str.to_i
       if (seconds_i < 60)
-        return "There are " + secs_str + " seconds left"
+        return sprintf "There are %s seconds left", secs_str.strip!
       end
       minutes_i = (seconds_i / 60).floor
       seconds_i = seconds_i % 60
@@ -133,7 +164,83 @@ module Spot
       "Restarting spotify..."
     end
 
+    get '/album-info' do
+      response.headers['Content-Type'] = 'application/json'
+      serialize_album(Spotify.getAlbumInfo(params[:uri])).to_json
+    end
+
     private
+
+      def serialize_album(album)
+        if album.nil?
+          return {}
+        end
+        artists = []
+        if defined? album.artist
+          album.push({
+            'name' => album.artist.name,
+            'uri' => album.artist.uri
+          })
+        else
+          if defined? album.artists and album.artists.length > 0
+            album.artists.each {|artist| 
+              artists.push({
+              'name' => artist.name,
+              'uri' => artist.uri
+              })
+            }
+          end
+        end
+        tracks = []
+        album.tracks.each {
+          |track|
+          tracks.push(serialize_track(track))
+        }
+        {
+          'name' => album.name,
+          'artists' => artists,
+          'released' => album.released,
+          'tracks' => tracks
+        }
+      end
+
+      def serialize_track(track)
+        if track.nil?
+          return {}
+        end
+        artists = []
+        if defined? track.artist
+          artists.push({
+            'name' => track.artist.name,
+            'uri' => track.artist.uri
+          })
+        else
+          if defined? track.artists and track.artists.length > 0
+            track.artists.each {|artist| 
+              artists.push({
+              'name' => artist.name,
+              'uri' => artist.uri
+              })
+            }
+          end
+        end
+        obj = {
+          'uri' => track.uri,
+          'name' => track.name,
+          'popularity' => track.popularity,
+          'track_number' => track.track_number,
+          'length' => track.length,
+          'artists' => artists
+        }
+        if (not track.album.nil?)
+          obj['album'] = {
+            'name' => track.album.name,
+            'released' => track.album.released,
+            'uri' => track.album.uri
+          }
+        end
+        obj
+      end
 
       def bump_up_volume
         current_volume = Player.volume

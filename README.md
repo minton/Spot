@@ -26,6 +26,14 @@ Install gems:
 
     bundle install
 
+Set Up Environment Variables:
+
+To provide a link to your audio stream in the web interface, define an environment variable `SPOT_FEED_URL`
+
+    ```
+    export SPOT_FEEL_URL="//your/audio/feed/listen.m3u"
+    ```
+
 Start Spot:
 
     rake start
