@@ -80,6 +80,9 @@ Spot can technically be used by any client capable of GET/PUT/POST requests as d
 
 ![Ugly ScreenShot](https://raw.github.com/minton/windowspot/master/UglyScreenShot.PNG)
 
+[iSpot](http://github.com/otternq/iSpot) for iOS
+
+![iSpot ScreenShot](https://s3.amazonaws.com/ispot/iOS+Simulator+Screen+shot+Jan+25%2C+2014%2C+10.53.21+AM.png)
 
 ###API
 
