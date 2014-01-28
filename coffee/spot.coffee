@@ -27,6 +27,8 @@
 #   hubot play #n - Play the nth track from the last search results
 #   hubot album #n - Pull up album info for the nth track in the last search results
 #   hubot last find - Pulls up the most recent find query
+#   hubot airplay <Apple TV> - Tell Spot to broadcast to the specified Apple TV.
+#   hubot spot - Start or restart the Spotify client.
 # Authors:
 #   mcminton, <Shad Downey> github:andromedado
 VERSION = '1.3.1'
@@ -268,5 +270,18 @@ module.exports = (robot) ->
 
   robot.respond /spot version\??/i, (message) ->
     message.send(':small_blue_diamond: Well, ' + message.message.user.name + ', my Spot version is presently ' + VERSION)
+
+  robot.respond /airplay (.*)/i, (message) ->
+    params = {atv: message.match[1]}
+    spotRequest message, '/airplay', 'put', params, (err, res, body) ->
+      message.send("#{body} :mega:")
+
+  robot.respond /spot/i, (message) ->
+    spotRequest message, '/spot', 'put', {}, (err, res, body) ->
+      message.send(body)
+
+  robot.respond /respot/i, (message) ->
+    spotRequest message, '/respot', 'put', {}, (err, res, body) ->
+      message.send(body)
 
 
