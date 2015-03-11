@@ -61,6 +61,7 @@ module Spot
 
     def self.play_song(spotifyTrack)
       `./script/play-song #{spotifyTrack}`
+      sleep(0.5) #hack because it often sends back the info from the previously playing song
       self.playing
     end
 
