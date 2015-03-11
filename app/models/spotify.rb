@@ -4,22 +4,22 @@ module Spot
     #Excludes non-US tracks.
     #Orders by popularity.
     def self.find(query)
-        data = self.find_data(query)
-        data.nil? ? nil : data.uri
+      data = self.find_data(query)
+      data.nil? ? nil : data.uri
     end
 
     def self.find_data(query)
-        tracks = self.find_tracks(query)
-        tracks.length > 0 ? tracks.first : nil
+      tracks = self.find_tracks(query)
+      tracks.length > 0 ? tracks.first : nil
     end
 
     def self.find_tracks(query)
-        RSpotify::Track.search(query, limit: 10, market: 'US').sort_by(&:popularity)
+      RSpotify::Track.search(query, limit: 10, market: 'US').sort_by(&:popularity)
     end
 
     def self.get_album_info(uri)
-        uri = uri.gsub("spotify:album:","")
-        RSpotify::Album.find(uri)
+      uri = uri.gsub("spotify:album:","")
+      RSpotify::Album.find(uri)
     end
 
   end

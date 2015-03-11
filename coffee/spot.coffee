@@ -137,16 +137,16 @@ module.exports = (robot) ->
     message.finish()
     spotRequest message, '/play', 'put', {}, (err, res, body) ->
       message.send(":notes:  #{body}")
-  
+
   robot.respond /pause/i, (message) ->
     params = {volume: 0}
     spotRequest message, '/pause', 'put', params, (err, res, body) ->
       message.send("#{body} :cry:")
-  
+
   robot.respond /next/i, (message) ->
     spotRequest message, '/next', 'put', {}, (err, res, body) ->
       message.send("#{body} :fast_forward:")
-  
+
   robot.respond /back/i, (message) ->
     spotRequest message, '/back', 'put', {}, (err, res, body) ->
       message.send("#{body} :rewind:")
