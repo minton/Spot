@@ -212,7 +212,7 @@ module Spot
           'name' => track.name,
           'popularity' => track.popularity,
           'track_number' => track.track_number,
-          'length' => track.duration_ms,
+          'length' => track.duration_ms / 1000,
           'artists' => artists
         }
         unless track.album.nil?
