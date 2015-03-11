@@ -2,10 +2,11 @@ require 'models/player'
 require 'models/spotify'
 require 'logger'
 require 'json'
+require 'rspotify'
 
 module Spot
   class App < Sinatra::Base
-    
+
     configure do
       enable :logging
       `./script/boot`
@@ -65,13 +66,13 @@ module Spot
     end
 
     post '/find' do
-      query = params[:q]  
+      query = params[:q]
       track_uri = Spotify.find(query)
-      if track_uri.nil? 
+      if track_uri.nil?
         "What the hell is you talkin' 'bout?"
       else
         Player.play_song(track_uri)
-      end 
+      end
     end
 
     post '/play-uri' do
@@ -79,7 +80,7 @@ module Spot
     end
 
     get '/query' do
-      tracks = Spotify.findTracks(params[:q])
+      tracks = Spotify.find_tracks(params[:q])
       res = []
       tracks.each {|track|
         res.push(serialize_track(track))
@@ -90,14 +91,14 @@ module Spot
 
     get '/single-query' do
       query = params[:q]
-      track_data = Spotify.findData(query)
+      track_data = Spotify.find_data(query)
       response.headers['Content-Type'] = 'application/json'
       serialize_track(track_data).to_json
     end
 
     post '/just-find' do
       query = params[:q]
-      track_data = Spotify.findData(query)
+      track_data = Spotify.find_data(query)
       if track_data.nil?
         return "What the hell is you talkin' 'bout?"
       end
@@ -166,62 +167,44 @@ module Spot
 
     get '/album-info' do
       response.headers['Content-Type'] = 'application/json'
-      serialize_album(Spotify.getAlbumInfo(params[:uri])).to_json
+      serialize_album(Spotify.get_album_info(params[:uri])).to_json
     end
 
     private
 
       def serialize_album(album)
-        if album.nil?
-          return {}
-        end
+        return {} if album.nil?
+
         artists = []
-        if defined? album.artist
-          album.push({
-            'name' => album.artist.name,
-            'uri' => album.artist.uri
-          })
-        else
-          if defined? album.artists and album.artists.length > 0
-            album.artists.each {|artist| 
-              artists.push({
+        unless album.artists.length == 0
+          album.artists.each do |artist|
+            artists.push({
               'name' => artist.name,
               'uri' => artist.uri
               })
-            }
           end
         end
+
         tracks = []
-        album.tracks.each {
-          |track|
-          tracks.push(serialize_track(track))
-        }
+        album.tracks.each { |track| tracks.push(serialize_track(track)) }
         {
           'name' => album.name,
           'artists' => artists,
-          'released' => album.released,
+          'released' => album.release_date,
           'tracks' => tracks
         }
       end
 
       def serialize_track(track)
-        if track.nil?
-          return {}
-        end
+        return {} if track.nil?
+
         artists = []
-        if defined? track.artist
-          artists.push({
-            'name' => track.artist.name,
-            'uri' => track.artist.uri
-          })
-        else
-          if defined? track.artists and track.artists.length > 0
-            track.artists.each {|artist| 
-              artists.push({
+        unless track.artists.nil?
+          track.artists.each do |artist|
+            artists.push({
               'name' => artist.name,
               'uri' => artist.uri
-              })
-            }
+            })
           end
         end
         obj = {
@@ -229,13 +212,13 @@ module Spot
           'name' => track.name,
           'popularity' => track.popularity,
           'track_number' => track.track_number,
-          'length' => track.length,
+          'length' => track.duration_ms,
           'artists' => artists
         }
-        if (not track.album.nil?)
+        unless track.album.nil?
           obj['album'] = {
             'name' => track.album.name,
-            'released' => track.album.released,
+            'released' => track.album.release_date,
             'uri' => track.album.uri
           }
         end
@@ -267,6 +250,5 @@ module Spot
           current_volume*0.1
         end
       end
-      
   end
 end

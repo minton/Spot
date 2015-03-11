@@ -1,30 +1,25 @@
-require 'meta-spotify'
-
 module Spot
   class Spotify
     #Search spotify meta db for tracks with name like query.
     #Excludes non-US tracks.
     #Orders by popularity.
     def self.find(query)
-        data = self.findData(query)
+        data = self.find_data(query)
         data.nil? ? nil : data.uri
     end
 
-    def self.findData(query)
-        tracks = self.findTracks(query)
-        tracks.length > 0 ? tracks[0] : nil
+    def self.find_data(query)
+        tracks = self.find_tracks(query)
+        tracks.length > 0 ? tracks.first : nil
     end
 
-    def self.findTracks(query)
-        search = MetaSpotify::Track.search(query)
-        tracks = search.first[1]
-        tracks.select! {|i| i.album.available_territories.include?('us') || i.album.available_territories.include?('worldwide') }
-        tracks.sort! {|x,y| y.popularity <=> x.popularity }
-        tracks
+    def self.find_tracks(query)
+        RSpotify::Track.search(query, limit: 10, market: 'US').sort_by(&:popularity)
     end
 
-    def self.getAlbumInfo(uri)
-      MetaSpotify::Album.lookup(uri, {:extras => 'trackdetail'})
+    def self.get_album_info(uri)
+        uri = uri.gsub("spotify:album:","")
+        RSpotify::Album.find(uri)
     end
 
   end
