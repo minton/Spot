@@ -4,7 +4,8 @@ gem 'sinatra'
 gem 'rake'
 gem 'foreman'
 gem 'thin'
-gem 'meta-spotify'
+gem 'pry'
+gem 'rspotify'
 
 group :development do
   gem 'shotgun'
