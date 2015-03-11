@@ -14,7 +14,8 @@ module Spot
     end
 
     def self.find_tracks(query)
-      RSpotify::Track.search(query, limit: 10, market: 'US').sort_by(&:popularity)
+      tracks = RSpotify::Track.search(query, limit: 20, market: 'US')
+      tracks.sort_by{|track| -track.popularity}
     end
 
     def self.get_album_info(uri)
