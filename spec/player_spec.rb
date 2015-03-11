@@ -13,4 +13,11 @@ module Spot
     it { Player.should respond_to(:volume) }
     it { Player.should respond_to(:play_song) }
   end
+
+  describe Spotify do
+    it { Spotify.should respond_to(:find) }
+    it { Spotify.should respond_to(:find_data) }
+    it { Spotify.should respond_to(:find_tracks) }
+    it { Spotify.should respond_to(:get_album_info) }
+  end
 end
