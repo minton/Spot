@@ -28,7 +28,7 @@ module Spot
       `./script/pause`
       "Everything is paused."
     end
-    
+
     def self.next
       `./script/next`
       "Onwards! #{self.playing}"
@@ -38,7 +38,7 @@ module Spot
       `./script/back`
       "Let's hear it again! #{self.playing}"
     end
-    
+
     def self.mute
       `./script/mute`
       'Shhh...'
@@ -48,7 +48,7 @@ module Spot
       vol = `./script/get-volume`.gsub /(?<!\n)\n(?!\n)/, ''
       vol.to_i
     end
-    
+
     def self.how_much_longer
       `./script/how-much-longer`
     end

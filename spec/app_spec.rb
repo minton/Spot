@@ -5,9 +5,9 @@ module Spot
     describe "GET /" do
       it "should greet us" do
         get "/"
-        last_response.should be_ok
-        last_response.body.should == "Welcome to Spot!<br/>http://github.com/minton/Spot"
-      end 
+        expect(last_response).to be_ok
+        expect(last_response.body).to include("Spot")
+      end
     end
   end
 end
