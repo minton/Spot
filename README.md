@@ -12,11 +12,11 @@ This project is heavily inspired by [Play](https://github.com/play/play). Which 
 
 *   OS X
 *   Spotify > 0.8
-*   Campfire with Hubot (optional but recommended)
+*   (Slack, Campfire, or HipChat) with Hubot (optional but recommended)
 
 ##Setup
 
-Install [Spotify](https://www.spotify.com).
+Install https://www.spotify.com. <--See [#19](https://github.com/minton/Spot/pull/19#issuecomment-78389706)
 
 Clone the repo:
 
