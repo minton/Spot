@@ -68,7 +68,7 @@ module Spot
     def self.say(what)
       currentVolume = self.volume
       self.volume=currentVolume/3
-      `say #{what}`
+      system('say', what)
       self.volume = currentVolume
       what
     end
