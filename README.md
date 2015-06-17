@@ -16,7 +16,7 @@ This project is heavily inspired by [Play](https://github.com/play/play). Which 
 
 ##Setup
 
-Install https://www.spotify.com. <--See [#19](https://github.com/minton/Spot/pull/19#issuecomment-78389706)
+You'll need an AppleScript'able version of Spotify. See [this gist](https://gist.github.com/minton/39b21dfab426ba1745b1). 
 
 Clone the repo:
 
