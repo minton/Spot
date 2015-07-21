@@ -298,7 +298,7 @@ module.exports = (robot) ->
 
   robot.respond /find ?(\d+)? music (.*)/i, (message) ->
     limit = message.match[1] || 3
-    params = {q: message.match[2]}
+    params = {q: message.match[2], limit: limit}
     spotRequest message, '/query', 'get', params, (err, res, body) ->
       try
         data = JSON.parse(body)
