@@ -55,12 +55,12 @@ module Spot
 
     def self.volume=(vol)
       vol+=1
-      `./script/set-volume #{vol}`
+      system('./script/set-volume', vol.to_s)
       vol
     end
 
     def self.play_song(spotifyTrack)
-      `./script/play-song #{spotifyTrack}`
+      system('./script/play-song', spotifyTrack)
       sleep(0.5) #hack because it often sends back the info from the previously playing song
       self.playing
     end
@@ -68,7 +68,7 @@ module Spot
     def self.say(what)
       currentVolume = self.volume
       self.volume=currentVolume/3
-      `say #{what}`
+      system('say', what)
       self.volume = currentVolume
       what
     end
