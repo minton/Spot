@@ -80,7 +80,9 @@ module Spot
     end
 
     get '/query' do
-      tracks = Spotify.find_tracks(params[:q])
+      number = params[:limit]
+      query = params[:q]
+      tracks = Spotify.find_tracks(query, number)
       res = []
       tracks.each {|track|
         res.push(serialize_track(track))
