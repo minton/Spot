@@ -13,7 +13,7 @@ module Spot
       tracks.length > 0 ? tracks.first : nil
     end
 
-    def self.find_tracks(query, limit)
+    def self.find_tracks(query, limit = 1)
       tracks = RSpotify::Track.search(query, limit: limit, market: 'US')
       tracks.sort_by{|track| -track.popularity}
     end
