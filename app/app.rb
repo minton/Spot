@@ -81,6 +81,9 @@ module Spot
 
     get '/query' do
       number = params[:limit]
+      if number.nil?
+        number = 20
+      end
       query = params[:q]
       tracks = Spotify.find_tracks(query, number)
       res = []
