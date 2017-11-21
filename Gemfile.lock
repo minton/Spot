@@ -4,7 +4,7 @@ GEM
     coderay (1.0.9)
     daemons (1.1.9)
     diff-lcs (1.2.2)
-    eventmachine (1.0.3)
+    eventmachine (1.2.5)
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
     foreman (0.62.0)
@@ -102,3 +102,6 @@ DEPENDENCIES
   simplecov
   sinatra
   thin
+
+BUNDLED WITH
+   1.16.0
